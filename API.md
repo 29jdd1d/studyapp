@@ -426,3 +426,111 @@ Authorization: Bearer {your_jwt_token}
 2. 文件上传大小限制为 100MB
 3. 分页查询默认每页10条，最大100条
 4. JWT Token有效期为24小时
+
+## 7. 文件上传模块 (File Upload) - 腾讯云COS
+
+### 7.1 上传视频
+- **接口**: `POST /file/upload/video`
+- **描述**: 上传视频文件到腾讯云COS
+- **需要认证**
+
+**请求参数**:
+- `file`: MultipartFile (视频文件)
+
+**响应示例**:
+```json
+{
+  "code": 200,
+  "message": "视频上传成功",
+  "data": {
+    "url": "https://your_bucket_name.cos.ap-guangzhou.myqcloud.com/videos/xxxxx.mp4"
+  }
+}
+```
+
+### 7.2 上传文档
+- **接口**: `POST /file/upload/document`
+- **描述**: 上传文档文件到腾讯云COS
+- **需要认证**
+
+**请求参数**:
+- `file`: MultipartFile (文档文件)
+
+### 7.3 上传图片
+- **接口**: `POST /file/upload/image`
+- **描述**: 上传图片文件到腾讯云COS
+- **需要认证**
+
+**请求参数**:
+- `file`: MultipartFile (图片文件)
+
+### 7.4 上传封面
+- **接口**: `POST /file/upload/cover`
+- **描述**: 上传封面图片到腾讯云COS
+- **需要认证**
+
+**请求参数**:
+- `file`: MultipartFile (封面图片)
+
+## Redis缓存说明
+
+系统已集成Redis缓存，以下业务使用了缓存优化：
+
+### 用户信息缓存
+- **缓存键**: `user:{userId}`
+- **缓存时间**: 1小时
+- **缓存场景**: 
+  - 获取用户信息
+  - 获取学习数据看板
+- **更新策略**: 更新用户信息时自动更新缓存
+
+### 学习资源缓存
+- **缓存键**: `resources:{subject}_{type}_{pageNum}_{pageSize}`
+- **缓存时间**: 1小时
+- **缓存场景**:
+  - 分页查询学习资源
+  - 按章节获取资源
+  - 获取资源详情
+- **更新策略**: 创建、更新、删除资源时清除相关缓存
+
+### 题目缓存
+- **缓存键**: `questions:{subject}_{chapter}_{type}_{year}_{pageNum}_{pageSize}`
+- **缓存时间**: 1小时
+- **缓存场景**:
+  - 分页查询题目
+  - 获取题目详情
+- **更新策略**: 创建题目时清除相关缓存
+
+## 腾讯云COS配置
+
+需要在 `application.yml` 中配置：
+
+```yaml
+tencent:
+  cos:
+    secret-id: your_secret_id_here
+    secret-key: your_secret_key_here
+    region: ap-guangzhou
+    bucket-name: your_bucket_name
+    base-url: https://your_bucket_name.cos.ap-guangzhou.myqcloud.com
+```
+
+## Redis配置
+
+需要在 `application.yml` 中配置：
+
+```yaml
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    timeout: 3000ms
+```

@@ -7,6 +7,8 @@ import com.studyapp.repository.AnswerRecordRepository;
 import com.studyapp.repository.QuestionRepository;
 import com.studyapp.repository.WrongQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,13 +40,15 @@ public class QuestionService {
      * 创建题目
      */
     @Transactional
+    @CacheEvict(value = "questions", allEntries = true)
     public Question createQuestion(Question question) {
         return questionRepository.save(question);
     }
     
     /**
-     * 分页查询题目
+     * 分页查询题目（使用Redis缓存）
      */
+    @Cacheable(value = "questions", key = "#subject + '_' + #chapter + '_' + #type + '_' + #year + '_' + #pageNum + '_' + #pageSize")
     public Page<Question> getQuestions(String subject, String chapter, String type, String year, 
                                        Integer pageNum, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "createTime"));
@@ -63,8 +67,9 @@ public class QuestionService {
     }
     
     /**
-     * 获取题目详情
+     * 获取题目详情（使用Redis缓存）
      */
+    @Cacheable(value = "question", key = "#id")
     public Question getQuestion(Long id) {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("题目不存在"));

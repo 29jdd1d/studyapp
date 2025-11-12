@@ -10,6 +10,8 @@
 
 - **后端框架**: Spring Boot 2.7.14
 - **数据库**: MySQL 8.0
+- **缓存**: Redis (Spring Data Redis + Jedis)
+- **对象存储**: 腾讯云COS (Cloud Object Storage)
 - **ORM框架**: Spring Data JPA
 - **安全框架**: Spring Security + JWT
 - **API文档**: Swagger 3.0
@@ -26,6 +28,8 @@
 - 支持视频、文档、题库等多种资源类型
 - 按科目、章节分类管理
 - 资源上传、发布与管理
+- **腾讯云COS文件存储**（视频、文档、图片）
+- **Redis缓存优化**（资源列表、详情缓存）
 
 ### 3. 个性化学习计划模块
 - 根据目标院校和专业生成学习计划
@@ -87,7 +91,8 @@ src/main/java/com/studyapp/
 │   ├── LearningResourceService.java
 │   ├── StudyPlanService.java
 │   ├── QuestionService.java
-│   └── CommunityService.java
+│   ├── CommunityService.java
+│   └── CosService.java           # 腾讯云COS服务
 ├── dto/                          # 数据传输对象
 │   ├── WechatLoginRequest.java
 │   ├── LoginResponse.java
@@ -103,6 +108,8 @@ src/main/java/com/studyapp/
 - JDK 1.8+
 - Maven 3.6+
 - MySQL 8.0+
+- Redis 6.0+ (可选，用于缓存)
+- 腾讯云COS账号 (可选，用于文件存储)
 
 ### 2. 数据库配置
 
@@ -111,26 +118,48 @@ src/main/java/com/studyapp/
 CREATE DATABASE studyapp DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-修改 `src/main/resources/application.yml` 中的数据库配置：
+### 3. Redis配置
+
+安装并启动Redis：
+```bash
+# Linux/Mac
+redis-server
+
+# 或使用Docker
+docker run -d -p 6379:6379 redis:6.0
+```
+
+### 4. 应用配置
+
+修改 `src/main/resources/application.yml` 中的配置：
 ```yaml
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/studyapp?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     username: your_username
     password: your_password
-```
+  
+  redis:
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
 
-### 3. 微信小程序配置
-
-在 `application.yml` 中配置微信小程序的 appid 和 secret：
-```yaml
 wechat:
   miniapp:
-    appid: your_appid
-    secret: your_secret
+    appid: your_wechat_appid
+    secret: your_wechat_secret
+
+tencent:
+  cos:
+    secret-id: your_cos_secret_id
+    secret-key: your_cos_secret_key
+    region: ap-guangzhou
+    bucket-name: your_bucket_name
+    base-url: https://your_bucket_name.cos.ap-guangzhou.myqcloud.com
 ```
 
-### 4. 运行项目
+### 5. 运行项目
 
 ```bash
 # 编译项目

@@ -26,6 +26,29 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+  
+  # Redis Configuration
+  redis:
+    host: localhost
+    port: 6379
+    password: 
+    database: 0
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+    timeout: 3000ms
+
+# Tencent Cloud COS Configuration
+tencent:
+  cos:
+    secret-id: your_secret_id_here
+    secret-key: your_secret_key_here
+    region: ap-guangzhou
+    bucket-name: your_bucket_name
+    base-url: https://your_bucket_name.cos.ap-guangzhou.myqcloud.com
 
 # WeChat Mini Program Configuration
 wechat:

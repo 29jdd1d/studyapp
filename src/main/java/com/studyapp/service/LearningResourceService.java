@@ -3,6 +3,9 @@ package com.studyapp.service;
 import com.studyapp.entity.LearningResource;
 import com.studyapp.repository.LearningResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,10 +25,14 @@ public class LearningResourceService {
     @Autowired
     private LearningResourceRepository resourceRepository;
     
+    @Autowired
+    private CosService cosService;
+    
     /**
      * 创建学习资源
      */
     @Transactional
+    @CacheEvict(value = "resources", allEntries = true)
     public LearningResource createResource(LearningResource resource) {
         return resourceRepository.save(resource);
     }
@@ -34,6 +41,8 @@ public class LearningResourceService {
      * 更新学习资源
      */
     @Transactional
+    @CachePut(value = "resource", key = "#id")
+    @CacheEvict(value = "resources", allEntries = true)
     public LearningResource updateResource(Long id, LearningResource resource) {
         LearningResource existing = resourceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("资源不存在"));
@@ -70,27 +79,50 @@ public class LearningResourceService {
      * 删除学习资源
      */
     @Transactional
+    @CacheEvict(value = {"resource", "resources"}, allEntries = true)
     public void deleteResource(Long id) {
-        resourceRepository.deleteById(id);
+        LearningResource resource = resourceRepository.findById(id).orElse(null);
+        if (resource != null) {
+            // 删除COS上的文件
+            if (resource.getFileUrl() != null) {
+                cosService.deleteFile(resource.getFileUrl());
+            }
+            if (resource.getCoverUrl() != null) {
+                cosService.deleteFile(resource.getCoverUrl());
+            }
+            resourceRepository.deleteById(id);
+        }
     }
     
     /**
-     * 获取学习资源详情
+     * 获取学习资源详情（使用Redis缓存）
      */
+    @Cacheable(value = "resource", key = "#id")
     public LearningResource getResource(Long id) {
         LearningResource resource = resourceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("资源不存在"));
         
-        // 增加浏览次数
-        resource.setViewCount(resource.getViewCount() + 1);
-        resourceRepository.save(resource);
+        // 增加浏览次数（异步更新，不影响缓存）
+        updateViewCount(id);
         
         return resource;
     }
     
     /**
-     * 分页查询学习资源
+     * 异步更新浏览次数
      */
+    @Transactional
+    public void updateViewCount(Long id) {
+        resourceRepository.findById(id).ifPresent(resource -> {
+            resource.setViewCount(resource.getViewCount() + 1);
+            resourceRepository.save(resource);
+        });
+    }
+    
+    /**
+     * 分页查询学习资源（使用Redis缓存）
+     */
+    @Cacheable(value = "resources", key = "#subject + '_' + #type + '_' + #pageNum + '_' + #pageSize")
     public Page<LearningResource> getResources(String subject, String type, Integer pageNum, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "createTime"));
         
@@ -108,6 +140,7 @@ public class LearningResourceService {
     /**
      * 按章节获取资源
      */
+    @Cacheable(value = "resources", key = "'chapter_' + #subject + '_' + #chapter")
     public List<LearningResource> getResourcesByChapter(String subject, String chapter) {
         return resourceRepository.findBySubjectAndChapter(subject, chapter);
     }
@@ -116,6 +149,7 @@ public class LearningResourceService {
      * 发布资源
      */
     @Transactional
+    @CacheEvict(value = {"resource", "resources"}, allEntries = true)
     public void publishResource(Long id) {
         LearningResource resource = resourceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("资源不存在"));

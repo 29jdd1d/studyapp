@@ -15,6 +15,9 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,8 +108,9 @@ public class UserService {
     }
     
     /**
-     * 获取用户信息
+     * 获取用户信息（使用Redis缓存）
      */
+    @Cacheable(value = "user", key = "#userId")
     public UserDTO getUserInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("用户不存在"));
@@ -117,6 +121,7 @@ public class UserService {
      * 更新用户信息
      */
     @Transactional
+    @CachePut(value = "user", key = "#userId")
     public UserDTO updateUserInfo(Long userId, UserDTO userDTO) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("用户不存在"));
@@ -147,6 +152,7 @@ public class UserService {
     /**
      * 获取学习数据看板
      */
+    @Cacheable(value = "user", key = "#userId")
     public UserDTO getStudyDashboard(Long userId) {
         return getUserInfo(userId);
     }
@@ -155,6 +161,7 @@ public class UserService {
      * 更新学习统计数据
      */
     @Transactional
+    @CacheEvict(value = "user", key = "#userId")
     public void updateStudyStats(Long userId, Integer studyHours, Integer completedQuestions, Integer correctQuestions) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("用户不存在"));
