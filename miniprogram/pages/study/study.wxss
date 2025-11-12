@@ -1,0 +1,214 @@
+/* pages/study/study.wxss */
+.container {
+  padding: 0;
+}
+
+/* 标签页 */
+.tabs {
+  display: flex;
+  background: #fff;
+  border-bottom: 1rpx solid #e8e8e8;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 30rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #1890ff;
+  font-weight: bold;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background: #1890ff;
+  border-radius: 2rpx;
+}
+
+/* 内容区域 */
+.content {
+  padding: 30rpx;
+}
+
+/* 学习资源 */
+.resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.resource-item {
+  display: flex;
+  padding: 20rpx;
+}
+
+.resource-cover {
+  width: 200rpx;
+  height: 150rpx;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.resource-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.resource-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resource-desc {
+  font-size: 24rpx;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 8rpx;
+}
+
+.resource-meta {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.resource-chapter {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 学习计划 */
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.plan-item {
+  padding: 30rpx;
+}
+
+.plan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.plan-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.plan-status {
+  font-size: 24rpx;
+}
+
+.plan-desc {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+.plan-progress {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 12rpx;
+  background: #f0f0f0;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1890ff, #52c41a);
+  border-radius: 6rpx;
+  transition: width 0.3s;
+}
+
+.progress-text {
+  font-size: 24rpx;
+  color: #1890ff;
+  font-weight: bold;
+  min-width: 80rpx;
+  text-align: right;
+}
+
+.create-btn {
+  width: 100%;
+  margin-top: 20rpx;
+}
+
+/* 今日任务 */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+}
+
+.task-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-title {
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.task-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.task-btn {
+  padding: 16rpx 32rpx;
+  font-size: 26rpx;
+}
+
+.task-completed {
+  font-size: 26rpx;
+  font-weight: bold;
+}

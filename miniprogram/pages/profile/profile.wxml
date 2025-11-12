@@ -1,0 +1,49 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="profile-header">
+    <view class="user-info" wx:if="{{userInfo}}">
+      <image class="avatar-large" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="user-detail">
+        <text class="nickname">{{userInfo.nickName}}</text>
+        <view class="user-stats">
+          <text class="stat-text">学习{{dashboard.studyDays || 0}}天</text>
+          <text class="stat-divider">|</text>
+          <text class="stat-text">连续打卡{{continuousDays}}天</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 学习数据统计 -->
+  <view class="stats-card card" wx:if="{{dashboard}}">
+    <view class="stats-grid">
+      <view class="stats-item">
+        <text class="stats-value">{{dashboard.studyHours || 0}}</text>
+        <text class="stats-label">学习时长(h)</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-value">{{dashboard.completedQuestions || 0}}</text>
+        <text class="stats-label">完成题数</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-value">{{dashboard.completedQuestions > 0 ? (dashboard.correctQuestions / dashboard.completedQuestions * 100).toFixed(0) : 0}}%</text>
+        <text class="stats-label">正确率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-card card">
+    <view class="menu-item" wx:for="{{menuList}}" wx:key="index" data-url="{{item.url}}" bindtap="onMenuClick">
+      <view class="menu-left">
+        <image class="menu-icon" src="{{item.icon}}"></image>
+        <text class="menu-title">{{item.title}}</text>
+      </view>
+      <text class="menu-arrow">></text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <button class="logout-btn" bindtap="logout">退出登录</button>
+</view>

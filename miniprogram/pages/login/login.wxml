@@ -1,0 +1,40 @@
+<!--pages/login/login.wxml-->
+<view class="login-container">
+  <view class="login-header">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
+    <text class="app-name">考研学习助手</text>
+    <text class="slogan">专注考研，成就梦想</text>
+  </view>
+
+  <view class="login-content">
+    <view class="feature-list">
+      <view class="feature-item">
+        <image class="feature-icon" src="/images/icon-resource.png"></image>
+        <text class="feature-text">海量学习资源</text>
+      </view>
+      <view class="feature-item">
+        <image class="feature-icon" src="/images/icon-plan.png"></image>
+        <text class="feature-text">智能学习计划</text>
+      </view>
+      <view class="feature-item">
+        <image class="feature-icon" src="/images/icon-question.png"></image>
+        <text class="feature-text">题库刷题练习</text>
+      </view>
+      <view class="feature-item">
+        <image class="feature-icon" src="/images/icon-community.png"></image>
+        <text class="feature-text">社区交流分享</text>
+      </view>
+    </view>
+
+    <button class="login-btn" bindtap="getUserProfile">
+      微信一键登录
+    </button>
+
+    <view class="login-tips">
+      <text>登录即表示同意</text>
+      <text class="link">《用户协议》</text>
+      <text>和</text>
+      <text class="link">《隐私政策》</text>
+    </view>
+  </view>
+</view>

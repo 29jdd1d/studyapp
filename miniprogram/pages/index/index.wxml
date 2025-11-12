@@ -1,0 +1,76 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card card" wx:if="{{userInfo}}">
+    <view class="user-info">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="user-detail">
+        <text class="nickname">{{userInfo.nickName}}</text>
+        <text class="study-info">已学习{{dashboard.studyDays || 0}}天</text>
+      </view>
+    </view>
+    <button class="checkin-btn btn-primary" bindtap="goToCheckIn">今日打卡</button>
+  </view>
+
+  <!-- 学习数据 -->
+  <view class="dashboard-card card" wx:if="{{dashboard}}">
+    <view class="card-title">学习数据</view>
+    <view class="dashboard-grid">
+      <view class="dashboard-item">
+        <text class="dashboard-value">{{dashboard.studyHours || 0}}</text>
+        <text class="dashboard-label">学习时长(h)</text>
+      </view>
+      <view class="dashboard-item">
+        <text class="dashboard-value">{{dashboard.completedQuestions || 0}}</text>
+        <text class="dashboard-label">完成题数</text>
+      </view>
+      <view class="dashboard-item">
+        <text class="dashboard-value">{{dashboard.correctQuestions || 0}}</text>
+        <text class="dashboard-label">正确题数</text>
+      </view>
+      <view class="dashboard-item">
+        <text class="dashboard-value">{{dashboard.completedQuestions > 0 ? (dashboard.correctQuestions / dashboard.completedQuestions * 100).toFixed(1) : 0}}%</text>
+        <text class="dashboard-label">正确率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="feature-card card">
+    <view class="card-title">学习工具</view>
+    <view class="feature-grid">
+      <view class="feature-item" bindtap="goToResource">
+        <image class="feature-icon" src="/images/icon-resource.png"></image>
+        <text class="feature-name">学习资源</text>
+      </view>
+      <view class="feature-item" bindtap="goToPlan">
+        <image class="feature-icon" src="/images/icon-plan.png"></image>
+        <text class="feature-name">学习计划</text>
+      </view>
+      <view class="feature-item" bindtap="goToQuestion">
+        <image class="feature-icon" src="/images/icon-question.png"></image>
+        <text class="feature-name">题库刷题</text>
+      </view>
+      <view class="feature-item" bindtap="goToCheckIn">
+        <image class="feature-icon" src="/images/icon-checkin.png"></image>
+        <text class="feature-name">学习打卡</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 置顶公告 -->
+  <view class="post-card card" wx:if="{{pinnedPosts.length > 0}}">
+    <view class="card-title">置顶公告</view>
+    <view class="post-list">
+      <view class="post-item" wx:for="{{pinnedPosts}}" wx:key="id" data-id="{{item.id}}" bindtap="goToPostDetail">
+        <text class="post-title">{{item.title}}</text>
+        <text class="post-time">{{item.createTime}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

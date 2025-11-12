@@ -1,0 +1,63 @@
+<!--pages/community/community.wxml-->
+<view class="container">
+  <!-- 标签页切换 -->
+  <view class="tabs">
+    <view class="tab-item {{activeTab === index ? 'active' : ''}}" 
+          wx:for="{{tabs}}" 
+          wx:key="index" 
+          data-index="{{index}}" 
+          bindtap="switchTab">
+      <text>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <view class="content">
+    <view class="post-list">
+      <view class="post-item card" wx:for="{{posts}}" wx:key="id" data-id="{{item.id}}" data-index="{{index}}">
+        <view class="post-header" bindtap="goToPostDetail">
+          <image class="author-avatar" src="{{item.authorAvatar}}" mode="aspectFill"></image>
+          <view class="author-info">
+            <text class="author-name">{{item.authorName}}</text>
+            <text class="post-time">{{item.createTime}}</text>
+          </view>
+        </view>
+        <view class="post-content" bindtap="goToPostDetail">
+          <text class="post-title">{{item.title}}</text>
+          <text class="post-text">{{item.content}}</text>
+          <view class="post-images" wx:if="{{item.images}}">
+            <image class="post-image" wx:for="{{item.images.split(',')}}" wx:key="index" wx:for-item="img" src="{{img}}" mode="aspectFill"></image>
+          </view>
+        </view>
+        <view class="post-footer">
+          <view class="post-stats">
+            <text class="stat-item">
+              <text class="iconfont icon-view"></text> {{item.views || 0}}
+            </text>
+            <text class="stat-item">
+              <text class="iconfont icon-comment"></text> {{item.comments || 0}}
+            </text>
+          </view>
+          <view class="post-action" data-id="{{item.id}}" data-index="{{index}}" bindtap="likePost">
+            <text class="iconfont icon-like"></text>
+            <text>{{item.likes || 0}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!loading && posts.length === 0}}">
+      <text>暂无帖子</text>
+    </view>
+  </view>
+
+  <!-- 发布按钮 -->
+  <view class="float-btn" bindtap="createPost">
+    <text class="iconfont icon-add">+</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
