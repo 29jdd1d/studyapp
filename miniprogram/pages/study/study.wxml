@@ -1,0 +1,82 @@
+<!--pages/study/study.wxml-->
+<view class="container">
+  <!-- 标签页切换 -->
+  <view class="tabs">
+    <view class="tab-item {{activeTab === index ? 'active' : ''}}" 
+          wx:for="{{tabs}}" 
+          wx:key="index" 
+          data-index="{{index}}" 
+          bindtap="switchTab">
+      <text>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 学习资源列表 -->
+  <view class="content" wx:if="{{activeTab === 0}}">
+    <view class="resource-list">
+      <view class="resource-item card" wx:for="{{resources}}" wx:key="id" data-id="{{item.id}}" bindtap="goToResourceDetail">
+        <image class="resource-cover" src="{{item.coverUrl}}" mode="aspectFill"></image>
+        <view class="resource-info">
+          <text class="resource-title">{{item.title}}</text>
+          <text class="resource-desc">{{item.description}}</text>
+          <view class="resource-meta">
+            <text class="tag tag-primary">{{item.subject}}</text>
+            <text class="resource-chapter">{{item.chapter}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:if="{{!loading && resources.length === 0}}">
+      <text>暂无学习资源</text>
+    </view>
+  </view>
+
+  <!-- 我的计划列表 -->
+  <view class="content" wx:if="{{activeTab === 1}}">
+    <view class="plan-list">
+      <view class="plan-item card" wx:for="{{plans}}" wx:key="id" data-id="{{item.id}}" bindtap="goToPlanDetail">
+        <view class="plan-header">
+          <text class="plan-title">{{item.title}}</text>
+          <text class="plan-status {{item.status === 'ACTIVE' ? 'text-success' : 'text-muted'}}">
+            {{item.status === 'ACTIVE' ? '进行中' : '已完成'}}
+          </text>
+        </view>
+        <text class="plan-desc">{{item.description}}</text>
+        <view class="plan-progress">
+          <view class="progress-bar">
+            <view class="progress-fill" style="width: {{item.progress || 0}}%"></view>
+          </view>
+          <text class="progress-text">{{item.progress || 0}}%</text>
+        </view>
+      </view>
+    </view>
+    <button class="create-btn btn-primary" bindtap="createPlan">创建学习计划</button>
+    <view class="empty" wx:if="{{!loading && plans.length === 0}}">
+      <text>暂无学习计划</text>
+    </view>
+  </view>
+
+  <!-- 今日任务列表 -->
+  <view class="content" wx:if="{{activeTab === 2}}">
+    <view class="task-list">
+      <view class="task-item card" wx:for="{{todayTasks}}" wx:key="id">
+        <view class="task-info">
+          <text class="task-title">{{item.title}}</text>
+          <text class="task-time">计划{{item.estimatedHours}}小时</text>
+        </view>
+        <button class="task-btn btn-success" data-id="{{item.id}}" bindtap="completeTask" wx:if="{{!item.completed}}">
+          完成
+        </button>
+        <text class="task-completed text-success" wx:else>已完成</text>
+      </view>
+    </view>
+    <view class="empty" wx:if="{{!loading && todayTasks.length === 0}}">
+      <text>今日暂无学习任务</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

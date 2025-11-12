@@ -4,10 +4,11 @@
 
 ## 项目简介
 
-本项目是一个完整的考研学习管理系统，包含微信小程序后端API，支持学习资源管理、个性化学习计划、题库刷题、社区交流等功能。
+本项目是一个完整的考研学习管理系统，包含Spring Boot后端API和微信小程序前端，支持学习资源管理、个性化学习计划、题库刷题、社区交流等功能。
 
 ## 技术栈
 
+### 后端技术
 - **后端框架**: Spring Boot 2.7.14
 - **数据库**: MySQL 8.0
 - **缓存**: Redis (Spring Data Redis + Jedis)
@@ -16,6 +17,13 @@
 - **安全框架**: Spring Security + JWT
 - **API文档**: Swagger 3.0
 - **构建工具**: Maven
+
+### 前端技术
+- **框架**: 微信小程序原生框架
+- **UI**: 自定义组件库
+- **状态管理**: 全局数据管理
+- **网络请求**: 封装的request工具
+- **认证**: JWT Token
 
 ## 核心功能模块
 
@@ -56,6 +64,7 @@
 
 ## 项目结构
 
+### 后端结构
 ```
 src/main/java/com/studyapp/
 ├── StudyApplication.java          # 主启动类
@@ -101,9 +110,39 @@ src/main/java/com/studyapp/
     └── JwtUtil.java
 ```
 
+### 前端结构
+```
+miniprogram/
+├── api/                          # API接口封装
+│   ├── user.js                  # 用户API
+│   ├── resource.js              # 学习资源API
+│   ├── plan.js                  # 学习计划API
+│   ├── question.js              # 题库API
+│   ├── community.js             # 社区API
+│   └── upload.js                # 文件上传API
+├── pages/                        # 页面文件
+│   ├── index/                   # 首页
+│   ├── login/                   # 登录页
+│   ├── study/                   # 学习页
+│   ├── community/               # 社区页
+│   ├── profile/                 # 个人中心
+│   ├── resource/                # 学习资源相关页面
+│   ├── plan/                    # 学习计划相关页面
+│   └── question/                # 题库相关页面
+├── utils/                        # 工具类
+│   └── request.js               # 网络请求封装
+├── app.js                        # 小程序入口
+├── app.json                      # 小程序配置
+├── app.wxss                      # 全局样式
+├── config.js                     # 配置文件
+└── README.md                     # 前端文档
+```
+
 ## 快速开始
 
-### 1. 环境要求
+### 后端启动
+
+#### 1. 环境要求
 
 - JDK 1.8+
 - Maven 3.6+
@@ -111,14 +150,14 @@ src/main/java/com/studyapp/
 - Redis 6.0+ (可选，用于缓存)
 - 腾讯云COS账号 (可选，用于文件存储)
 
-### 2. 数据库配置
+#### 2. 数据库配置
 
 创建数据库：
 ```sql
 CREATE DATABASE studyapp DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 3. Redis配置
+#### 3. Redis配置
 
 安装并启动Redis：
 ```bash
@@ -129,7 +168,7 @@ redis-server
 docker run -d -p 6379:6379 redis:6.0
 ```
 
-### 4. 应用配置
+#### 4. 应用配置
 
 修改 `src/main/resources/application.yml` 中的配置：
 ```yaml
@@ -159,7 +198,7 @@ tencent:
     base-url: https://your_bucket_name.cos.ap-guangzhou.myqcloud.com
 ```
 
-### 5. 运行项目
+#### 5. 运行项目
 
 ```bash
 # 编译项目
@@ -172,6 +211,46 @@ mvn spring-boot:run
 项目启动后访问：
 - API基础路径: http://localhost:8080/api
 - Swagger文档: http://localhost:8080/swagger-ui/
+
+### 前端启动
+
+#### 1. 安装微信开发者工具
+
+下载地址: https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html
+
+#### 2. 配置项目
+
+修改 `miniprogram/project.config.json` 中的AppID:
+```json
+{
+  "appid": "your_wechat_appid_here"
+}
+```
+
+修改 `miniprogram/config.js` 中的API地址:
+```javascript
+module.exports = {
+  baseUrl: 'http://localhost:8080/api'
+}
+```
+
+#### 3. 导入项目
+
+1. 打开微信开发者工具
+2. 点击"导入项目"
+3. 选择 `miniprogram` 目录
+4. 填写项目信息并导入
+
+#### 4. 运行调试
+
+1. 在开发者工具中点击"编译"
+2. 在模拟器中查看效果
+3. 或扫码在真机上预览
+
+详细的前端开发指南请查看：
+- [前端README](miniprogram/README.md)
+- [前端集成指南](MINIPROGRAM_GUIDE.md)
+- [前端开发示例](MINIPROGRAM_EXAMPLES.md)
 
 ## API接口文档
 

@@ -1,0 +1,5 @@
+<view class="container">
+  <view class="resource-item" wx:for="{{resources}}" wx:key="id">
+    <text>{{item.title}}</text>
+  </view>
+</view>
