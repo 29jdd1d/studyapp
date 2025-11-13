@@ -1,0 +1,61 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea
+*.iws
+*.iml
+*.ipr
+.vscode
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+.nyc_output/
+coverage/
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation (keep in image if needed, but typically not needed)
+*.md
+!README.md
+
+# CI/CD
+.github/
+
+# Test files (not needed in production)
+src/test/
+
+# Development files
+.editorconfig
+.prettierrc
+.eslintrc.json
+
+# Environment files (should use env vars instead)
+.env
+.env.local
+.env.*.local
+
+# Miniprogram (frontend, not needed in backend image)
+miniprogram/
