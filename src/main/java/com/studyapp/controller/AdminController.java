@@ -132,4 +132,29 @@ public class AdminController {
         Page<CommunityPost> page = communityService.getPosts(category, pageNum, pageSize);
         return Result.success(page);
     }
+    
+    @ApiOperation("获取所有用户（管理员）")
+    @GetMapping("/users")
+    public Result<Page<User>> getAllUsers(
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String nickName,
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize) {
+        Page<User> page = userService.getAllUsers(username, nickName, pageNum, pageSize);
+        return Result.success(page);
+    }
+    
+    @ApiOperation("更新用户（管理员）")
+    @PutMapping("/users/{id}")
+    public Result<Void> updateUserByAdmin(@PathVariable Long id, @RequestBody User user) {
+        userService.updateUserByAdmin(id, user);
+        return Result.success();
+    }
+    
+    @ApiOperation("删除用户（管理员）")
+    @DeleteMapping("/users/{id}")
+    public Result<Void> deleteUserByAdmin(@PathVariable Long id) {
+        userService.deleteUserByAdmin(id);
+        return Result.success();
+    }
 }
