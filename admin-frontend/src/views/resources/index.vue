@@ -91,8 +91,35 @@
         <el-form-item label="描述">
           <el-input v-model="editForm.description" type="textarea" :rows="4" placeholder="请输入描述" />
         </el-form-item>
-        <el-form-item label="资源URL">
-          <el-input v-model="editForm.fileUrl" placeholder="请输入资源URL" />
+        <el-form-item label="资源文件">
+          <el-upload
+            ref="uploadRef"
+            :auto-upload="false"
+            :limit="1"
+            :on-change="handleFileChange"
+            :on-remove="handleFileRemove"
+            :file-list="fileList"
+            accept="*/*"
+          >
+            <template #trigger>
+              <el-button type="primary">选择文件</el-button>
+            </template>
+            <template #tip>
+              <div class="el-upload__tip">
+                {{ getUploadTip() }}
+              </div>
+            </template>
+          </el-upload>
+          <div v-if="uploadProgress > 0 && uploadProgress < 100" style="margin-top: 10px;">
+            <el-progress :percentage="uploadProgress" />
+          </div>
+        </el-form-item>
+        <el-form-item label="资源URL" v-if="editForm.fileUrl">
+          <el-input v-model="editForm.fileUrl" placeholder="上传文件后自动生成" readonly>
+            <template #append>
+              <el-button @click="copyUrl" icon="DocumentCopy">复制</el-button>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="editForm.status">
@@ -113,10 +140,14 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { getResources, createResource, updateResource, deleteResource } from '../../api/admin'
+import { uploadVideo, uploadDocument } from '../../api/upload'
 
 const loading = ref(false)
 const dialogVisible = ref(false)
 const isEdit = ref(false)
+const uploadProgress = ref(0)
+const uploadRef = ref(null)
+const fileList = ref([])
 
 const searchForm = reactive({
   title: '',
@@ -133,6 +164,72 @@ const resourceList = ref([])
 const editForm = ref({})
 
 const dialogTitle = computed(() => isEdit.value ? '编辑资源' : '新增资源')
+
+const getUploadTip = () => {
+  const type = editForm.value.type
+  if (type === 'VIDEO') {
+    return '请选择视频文件，支持mp4、avi、mov等格式'
+  } else if (type === 'DOCUMENT') {
+    return '请选择文档文件，支持pdf、doc、docx、ppt、pptx等格式'
+  }
+  return '请先选择资源类型，然后上传对应的文件'
+}
+
+const handleFileChange = (file) => {
+  fileList.value = [file]
+}
+
+const handleFileRemove = () => {
+  fileList.value = []
+  editForm.value.fileUrl = ''
+  uploadProgress.value = 0
+}
+
+const copyUrl = () => {
+  navigator.clipboard.writeText(editForm.value.fileUrl)
+  ElMessage.success('URL已复制到剪贴板')
+}
+
+const uploadFile = async () => {
+  if (fileList.value.length === 0) {
+    return true
+  }
+
+  const file = fileList.value[0].raw
+  const type = editForm.value.type
+
+  try {
+    uploadProgress.value = 10
+    let response
+
+    if (type === 'VIDEO') {
+      response = await uploadVideo(file)
+    } else if (type === 'DOCUMENT') {
+      response = await uploadDocument(file)
+    } else {
+      ElMessage.error('请先选择资源类型')
+      uploadProgress.value = 0
+      return false
+    }
+
+    uploadProgress.value = 100
+
+    if (response.data && response.data.url) {
+      editForm.value.fileUrl = response.data.url
+      ElMessage.success('文件上传成功')
+      return true
+    } else {
+      ElMessage.error('文件上传失败：未返回URL')
+      uploadProgress.value = 0
+      return false
+    }
+  } catch (error) {
+    console.error('Upload error:', error)
+    ElMessage.error('文件上传失败：' + (error.message || '未知错误'))
+    uploadProgress.value = 0
+    return false
+  }
+}
 
 const loadResources = async () => {
   loading.value = true
@@ -203,16 +300,44 @@ const handleAdd = () => {
     fileUrl: '',
     status: 'DRAFT'
   }
+  fileList.value = []
+  uploadProgress.value = 0
   dialogVisible.value = true
 }
 
 const handleEdit = (row) => {
   isEdit.value = true
   editForm.value = { ...row }
+  fileList.value = []
+  uploadProgress.value = 0
   dialogVisible.value = true
 }
 
 const handleSave = async () => {
+  // Validate form
+  if (!editForm.value.title) {
+    ElMessage.error('请输入资源名称')
+    return
+  }
+  if (!editForm.value.type) {
+    ElMessage.error('请选择资源类型')
+    return
+  }
+
+  // Upload file first if a new file is selected
+  if (fileList.value.length > 0) {
+    const uploadSuccess = await uploadFile()
+    if (!uploadSuccess) {
+      return
+    }
+  }
+
+  // Check if fileUrl exists
+  if (!editForm.value.fileUrl) {
+    ElMessage.error('请上传资源文件或输入资源URL')
+    return
+  }
+
   try {
     if (isEdit.value) {
       await updateResource(editForm.value.id, editForm.value)
@@ -222,6 +347,8 @@ const handleSave = async () => {
       ElMessage.success('创建成功')
     }
     dialogVisible.value = false
+    fileList.value = []
+    uploadProgress.value = 0
     loadResources()
   } catch (error) {
     console.error('Failed to save resource:', error)

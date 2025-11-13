@@ -18,8 +18,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户服务类
@@ -217,5 +226,66 @@ public class UserService {
         UserDTO dto = new UserDTO();
         BeanUtils.copyProperties(user, dto);
         return dto;
+    }
+    
+    /**
+     * 获取所有用户（管理员）
+     */
+    @Transactional(readOnly = true)
+    public Page<User> getAllUsers(String username, String nickName, Integer pageNum, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "createTime"));
+        
+        Specification<User> spec = (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            
+            if (username != null && !username.trim().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("username"), "%" + username + "%"));
+            }
+            
+            if (nickName != null && !nickName.trim().isEmpty()) {
+                predicates.add(criteriaBuilder.like(root.get("nickName"), "%" + nickName + "%"));
+            }
+            
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+        
+        return userRepository.findAll(spec, pageable);
+    }
+    
+    /**
+     * 更新用户（管理员）
+     */
+    @Transactional
+    @CacheEvict(value = "user", key = "#id")
+    public void updateUserByAdmin(Long id, User updatedUser) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("用户不存在"));
+        
+        if (updatedUser.getNickName() != null) {
+            user.setNickName(updatedUser.getNickName());
+        }
+        if (updatedUser.getEmail() != null) {
+            user.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPhone() != null) {
+            user.setPhone(updatedUser.getPhone());
+        }
+        if (updatedUser.getEnabled() != null) {
+            user.setEnabled(updatedUser.getEnabled());
+        }
+        
+        userRepository.save(user);
+    }
+    
+    /**
+     * 删除用户（管理员）
+     */
+    @Transactional
+    @CacheEvict(value = "user", key = "#id")
+    public void deleteUserByAdmin(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("用户不存在");
+        }
+        userRepository.deleteById(id);
     }
 }

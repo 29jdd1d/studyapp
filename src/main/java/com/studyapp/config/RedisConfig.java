@@ -24,10 +24,11 @@ import java.time.Duration;
  * Redis Configuration
  * 
  * This configuration is only active when Redis is enabled
+ * If Redis is not available, caching will be disabled gracefully
  */
 @Configuration
 @EnableCaching
-@ConditionalOnProperty(name = "spring.redis.host", matchIfMissing = false)
+@ConditionalOnProperty(name = "spring.redis.host")
 public class RedisConfig {
     
     @Bean
