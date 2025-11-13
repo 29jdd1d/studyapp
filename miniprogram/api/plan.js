@@ -17,7 +17,9 @@ function createPlan(data) {
  * @param {String} params.examDate 考试日期
  */
 function generateRecommendPlan(params) {
-  return post('/plan/recommend', {}, { data: params });
+  // Backend expects @RequestParam, so we send as query parameters
+  const { targetUniversity, targetMajor, examDate } = params;
+  return post(`/plan/recommend?targetUniversity=${encodeURIComponent(targetUniversity)}&targetMajor=${encodeURIComponent(targetMajor)}&examDate=${examDate}`);
 }
 
 /**
@@ -48,9 +50,8 @@ function getTodayPlan(planId) {
  * @param {Number} actualHours 实际学习时长
  */
 function completePlanItem(itemId, actualHours) {
-  return post(`/plan/item/${itemId}/complete`, {}, { 
-    data: { actualHours } 
-  });
+  // Backend expects @RequestParam, so we send as query parameter
+  return post(`/plan/item/${itemId}/complete?actualHours=${actualHours}`);
 }
 
 module.exports = {

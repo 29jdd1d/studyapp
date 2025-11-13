@@ -32,9 +32,8 @@ function getQuestionDetail(id) {
  * @param {Number} timeSpent 答题时间（秒）
  */
 function submitAnswer(id, answer, timeSpent) {
-  return post(`/question/${id}/answer`, {}, {
-    data: { answer, timeSpent }
-  });
+  // Backend expects @RequestParam, so we send as query parameters
+  return post(`/question/${id}/answer?answer=${encodeURIComponent(answer)}${timeSpent ? '&timeSpent=' + timeSpent : ''}`);
 }
 
 /**

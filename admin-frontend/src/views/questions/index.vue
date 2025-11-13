@@ -148,8 +148,9 @@ const loadQuestions = async () => {
     }
     const response = await getQuestions(params)
     if (response.data) {
-      questionList.value = response.data.list || response.data
-      pagination.total = response.data.total || questionList.value.length
+      // Spring Data Page returns 'content' for the list and 'totalElements' for total count
+      questionList.value = response.data.content || response.data
+      pagination.total = response.data.totalElements || questionList.value.length
     }
   } catch (error) {
     console.error('Failed to load questions:', error)

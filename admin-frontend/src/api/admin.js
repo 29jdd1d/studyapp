@@ -59,7 +59,7 @@ export function updateResource(id, data) {
 
 export function deleteResource(id) {
   return request({
-    url: `/resource/${id}`,
+    url: `/admin/resource/${id}`,
     method: 'delete'
   })
 }
@@ -91,7 +91,7 @@ export function updateQuestion(id, data) {
 
 export function deleteQuestion(id) {
   return request({
-    url: `/question/${id}`,
+    url: `/admin/question/${id}`,
     method: 'delete'
   })
 }
@@ -115,15 +115,17 @@ export function updatePost(id, data) {
 
 export function deletePost(id) {
   return request({
-    url: `/community/post/${id}`,
+    url: `/admin/post/${id}`,
     method: 'delete'
   })
 }
 
-export function auditPost(id, status) {
-  return request({
-    url: `/admin/posts/${id}/audit`,
-    method: 'post',
-    data: { status }
-  })
-}
+// Note: auditPost endpoint does not exist in backend
+// Removed to align with backend API
+// export function auditPost(id, status) {
+//   return request({
+//     url: `/admin/posts/${id}/audit`,
+//     method: 'post',
+//     data: { status }
+//   })
+// }

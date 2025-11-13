@@ -241,8 +241,9 @@ const loadResources = async () => {
     }
     const response = await getResources(params)
     if (response.data) {
-      resourceList.value = response.data.list || response.data
-      pagination.total = response.data.total || resourceList.value.length
+      // Spring Data Page returns 'content' for the list and 'totalElements' for total count
+      resourceList.value = response.data.content || response.data
+      pagination.total = response.data.totalElements || resourceList.value.length
     }
   } catch (error) {
     console.error('Failed to load resources:', error)

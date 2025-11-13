@@ -49,24 +49,7 @@
         <el-table-column prop="createdAt" label="发布时间" width="180" />
         <el-table-column label="操作" fixed="right" width="200">
           <template #default="{ row }">
-            <el-button 
-              v-if="row.status === 'PENDING'" 
-              link 
-              type="success" 
-              size="small" 
-              @click="handleAudit(row, 'PUBLISHED')"
-            >
-              通过
-            </el-button>
-            <el-button 
-              v-if="row.status === 'PENDING'" 
-              link 
-              type="warning" 
-              size="small" 
-              @click="handleAudit(row, 'REJECTED')"
-            >
-              拒绝
-            </el-button>
+            <!-- Note: Audit functionality removed as /admin/posts/{id}/audit endpoint does not exist in backend -->
             <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
@@ -89,7 +72,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getPosts, auditPost, deletePost } from '../../api/admin'
+import { getPosts, deletePost } from '../../api/admin'
 
 const loading = ref(false)
 
@@ -116,8 +99,9 @@ const loadPosts = async () => {
     }
     const response = await getPosts(params)
     if (response.data) {
-      postList.value = response.data.list || response.data
-      pagination.total = response.data.total || postList.value.length
+      // Spring Data Page returns 'content' for the list and 'totalElements' for total count
+      postList.value = response.data.content || response.data
+      pagination.total = response.data.totalElements || postList.value.length
     }
   } catch (error) {
     console.error('Failed to load posts:', error)
@@ -175,23 +159,24 @@ const handleReset = () => {
   loadPosts()
 }
 
-const handleAudit = async (row, status) => {
-  const action = status === 'PUBLISHED' ? '通过' : '拒绝'
-  ElMessageBox.confirm(`确定要${action}该帖子吗？`, '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(async () => {
-    try {
-      await auditPost(row.id, status)
-      ElMessage.success(`${action}成功`)
-      loadPosts()
-    } catch (error) {
-      console.error('Failed to audit post:', error)
-      ElMessage.error(`${action}失败`)
-    }
-  }).catch(() => {})
-}
+// Note: handleAudit function removed as /admin/posts/{id}/audit endpoint does not exist in backend
+// const handleAudit = async (row, status) => {
+//   const action = status === 'PUBLISHED' ? '通过' : '拒绝'
+//   ElMessageBox.confirm(`确定要${action}该帖子吗？`, '提示', {
+//     confirmButtonText: '确定',
+//     cancelButtonText: '取消',
+//     type: 'warning'
+//   }).then(async () => {
+//     try {
+//       await auditPost(row.id, status)
+//       ElMessage.success(`${action}成功`)
+//       loadPosts()
+//     } catch (error) {
+//       console.error('Failed to audit post:', error)
+//       ElMessage.error(`${action}失败`)
+//     }
+//   }).catch(() => {})
+// }
 
 const handleDelete = (row) => {
   ElMessageBox.confirm('确定要删除该帖子吗？', '提示', {
