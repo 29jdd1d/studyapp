@@ -1,1 +1,193 @@
-.container { padding: 30rpx; }
+/* pages/community/post/create/create.wxss */
+.container {
+  min-height: 100vh;
+  padding: 20rpx;
+  background-color: #f5f5f5;
+}
+
+.create-form {
+  padding: 40rpx;
+}
+
+.form-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+
+.form-item {
+  margin-bottom: 35rpx;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+  font-weight: bold;
+}
+
+.required {
+  color: #f5222d;
+}
+
+.form-input,
+.form-textarea,
+.form-picker {
+  width: 100%;
+  padding: 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  background-color: #fafafa;
+  box-sizing: border-box;
+}
+
+.form-picker {
+  color: #333;
+}
+
+.form-picker.placeholder {
+  color: #999;
+}
+
+.form-textarea {
+  min-height: 300rpx;
+  line-height: 1.6;
+}
+
+.input-count {
+  position: absolute;
+  right: 20rpx;
+  bottom: -30rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 图片上传 */
+.image-upload {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.image-item {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.upload-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 8rpx;
+  background-color: #f0f0f0;
+}
+
+.image-delete {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  width: 50rpx;
+  height: 50rpx;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 40rpx;
+  line-height: 1;
+}
+
+.image-add {
+  width: 200rpx;
+  height: 200rpx;
+  border: 2rpx dashed #d9d9d9;
+  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fafafa;
+}
+
+.add-icon {
+  font-size: 60rpx;
+  color: #999;
+  line-height: 1;
+  margin-bottom: 10rpx;
+}
+
+.add-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 操作按钮 */
+.form-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 60rpx;
+}
+
+.btn-cancel,
+.btn-submit {
+  flex: 1;
+  padding: 24rpx;
+  font-size: 32rpx;
+  border-radius: 8rpx;
+  border: none;
+}
+
+.btn-cancel {
+  background-color: #fff;
+  color: #666;
+  border: 2rpx solid #d9d9d9;
+}
+
+.btn-submit {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+/* 加载遮罩 */
+.loading-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-content {
+  padding: 50rpx 80rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  text-align: center;
+}
+
+.loading-content text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 通用样式 */
+.card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: #fff;
+}

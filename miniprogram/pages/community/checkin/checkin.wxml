@@ -1,1 +1,119 @@
-<view class="container"><text>页面开发中</text></view>
+<!--pages/community/checkin/checkin.wxml-->
+<view class="container">
+  <!-- 打卡统计卡片 -->
+  <view class="stats-card card">
+    <view class="stats-header">
+      <text class="stats-title">学习打卡</text>
+      <text class="continuous-days">连续 {{continuousDays}} 天</text>
+    </view>
+
+    <view class="stats-grid">
+      <view class="stats-item">
+        <text class="stats-value">{{totalDays || 0}}</text>
+        <text class="stats-label">累计打卡</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-value">{{thisMonthDays || 0}}</text>
+        <text class="stats-label">本月打卡</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-value">{{studyHours || 0}}</text>
+        <text class="stats-label">学习时长(h)</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 今日打卡 -->
+  <view class="checkin-card card">
+    <view class="checkin-status" wx:if="{{!todayChecked}}">
+      <image class="checkin-icon" src="/images/checkin.png"></image>
+      <text class="checkin-text">今天还没有打卡哦</text>
+      <button class="btn-checkin btn-primary" bindtap="showCheckInDialog">立即打卡</button>
+    </view>
+
+    <view class="checkin-status checked" wx:else>
+      <image class="checkin-icon" src="/images/checked.png"></image>
+      <text class="checkin-text">今日已打卡</text>
+      <text class="checkin-time">{{todayCheckInTime}}</text>
+      <text class="checkin-note" wx:if="{{todayNote}}">{{todayNote}}</text>
+    </view>
+  </view>
+
+  <!-- 打卡日历 -->
+  <view class="calendar-card card">
+    <view class="calendar-header">
+      <text class="calendar-title">打卡日历</text>
+      <text class="calendar-month">{{currentMonth}}</text>
+    </view>
+
+    <view class="calendar-grid">
+      <text class="weekday" wx:for="{{weekdays}}" wx:key="index">{{item}}</text>
+      
+      <view class="calendar-day {{day.isToday ? 'today' : ''}} {{day.checked ? 'checked' : ''}} {{!day.inMonth ? 'other-month' : ''}}"
+            wx:for="{{calendarDays}}"
+            wx:key="index"
+            wx:for-item="day">
+        <text wx:if="{{day.inMonth}}">{{day.day}}</text>
+        <view class="check-mark" wx:if="{{day.checked}}">✓</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 打卡记录 -->
+  <view class="records-card card">
+    <view class="card-title">打卡记录</view>
+    
+    <view class="records-list" wx:if="{{records.length > 0}}">
+      <view class="record-item" wx:for="{{records}}" wx:key="id">
+        <view class="record-date">
+          <text class="record-day">{{item.day}}</text>
+          <text class="record-month">{{item.month}}</text>
+        </view>
+        <view class="record-content">
+          <text class="record-time">{{item.time}}</text>
+          <text class="record-hours">学习 {{item.studyHours}} 小时</text>
+          <text class="record-note" wx:if="{{item.note}}">{{item.note}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-records" wx:else>
+      <text>暂无打卡记录</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 打卡对话框 -->
+  <view class="modal" wx:if="{{showDialog}}" catchtap="hideCheckInDialog">
+    <view class="modal-content" catchtap="stopPropagation">
+      <text class="modal-title">今日学习打卡</text>
+      
+      <view class="form-item">
+        <text class="form-label">学习时长（小时）</text>
+        <input class="form-input"
+               type="digit"
+               placeholder="请输入学习时长"
+               value="{{studyHoursInput}}"
+               bindinput="onStudyHoursInput" />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">打卡笔记（选填）</text>
+        <textarea class="form-textarea"
+                  placeholder="记录今天的学习心得..."
+                  value="{{noteInput}}"
+                  bindinput="onNoteInput"
+                  maxlength="200" />
+      </view>
+
+      <view class="modal-actions">
+        <button class="btn-cancel" bindtap="hideCheckInDialog">取消</button>
+        <button class="btn-confirm btn-primary" bindtap="submitCheckIn">确定</button>
+      </view>
+    </view>
+  </view>
+</view>

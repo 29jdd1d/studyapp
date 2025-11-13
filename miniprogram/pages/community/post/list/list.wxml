@@ -1,1 +1,91 @@
-<view class="container"><text>页面开发中</text></view>
+<!--pages/community/post/list/list.wxml-->
+<view class="container">
+  <!-- 分类标签 -->
+  <view class="category-tabs">
+    <scroll-view class="tabs-scroll" scroll-x>
+      <view class="tab-item {{activeCategory === item.value ? 'active' : ''}}"
+            wx:for="{{categories}}"
+            wx:key="value"
+            data-value="{{item.value}}"
+            bindtap="selectCategory">
+        <text>{{item.label}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <view class="post-list">
+    <view class="post-item card" 
+          wx:for="{{posts}}" 
+          wx:key="id"
+          data-id="{{item.id}}"
+          data-index="{{index}}">
+      <!-- 帖子头部 -->
+      <view class="post-header" bindtap="goToPostDetail">
+        <image class="author-avatar" src="{{item.authorAvatar}}" mode="aspectFill"></image>
+        <view class="author-info">
+          <text class="author-name">{{item.authorName}}</text>
+          <text class="post-time">{{item.createTime}}</text>
+        </view>
+        <text class="post-category">{{item.category}}</text>
+      </view>
+
+      <!-- 帖子内容 -->
+      <view class="post-content" bindtap="goToPostDetail">
+        <text class="post-title">{{item.title}}</text>
+        <text class="post-text">{{item.content}}</text>
+        
+        <!-- 图片列表 -->
+        <view class="post-images" wx:if="{{item.images}}">
+          <image class="post-image {{item.images.split(',').length === 1 ? 'single' : ''}}"
+                 wx:for="{{item.images.split(',')}}"
+                 wx:key="index"
+                 wx:for-item="img"
+                 src="{{img}}"
+                 mode="aspectFill"
+                 data-urls="{{item.images}}"
+                 data-current="{{img}}"
+                 catchtap="previewImage">
+          </image>
+        </view>
+      </view>
+
+      <!-- 帖子底部 -->
+      <view class="post-footer">
+        <view class="post-stats">
+          <text class="stat-item">
+            <text class="icon">👁</text> {{item.views || 0}}
+          </text>
+          <text class="stat-item" data-id="{{item.id}}" catchtap="goToPostDetail">
+            <text class="icon">💬</text> {{item.comments || 0}}
+          </text>
+        </view>
+        <view class="post-action" data-id="{{item.id}}" data-index="{{index}}" catchtap="likePost">
+          <text class="icon {{item.liked ? 'liked' : ''}}">{{item.liked ? '❤️' : '🤍'}}</text>
+          <text>{{item.likes || 0}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && posts.length === 0}}">
+    <image class="empty-image" src="/images/empty.png"></image>
+    <text class="empty-text">暂无帖子</text>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore && !loading}}">
+    <text bindtap="loadMore">加载更多</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 发布按钮 -->
+  <view class="float-btn" bindtap="createPost">
+    <text>+</text>
+  </view>
+</view>
