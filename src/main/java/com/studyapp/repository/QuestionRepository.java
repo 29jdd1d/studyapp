@@ -24,4 +24,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Page<Question> findByYear(String year, Pageable pageable);
     
     List<Question> findBySubjectAndKnowledgePoint(String subject, String knowledgePoint);
+    
+    // Admin methods - search by content
+    Page<Question> findByContentContaining(String content, Pageable pageable);
+    
+    Page<Question> findByContentContainingAndType(String content, String type, Pageable pageable);
+    
+    Page<Question> findByType(String type, Pageable pageable);
 }

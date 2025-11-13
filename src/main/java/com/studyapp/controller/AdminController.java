@@ -74,11 +74,11 @@ public class AdminController {
     @ApiOperation("获取所有资源（管理员）")
     @GetMapping("/resources")
     public Result<Page<LearningResource>> getAllResources(
-            @RequestParam(required = false) String subject,
+            @RequestParam(required = false) String title,
             @RequestParam(required = false) String type,
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize) {
-        Page<LearningResource> page = resourceService.getResources(subject, type, pageNum, pageSize);
+        Page<LearningResource> page = resourceService.getResourcesForAdmin(title, type, pageNum, pageSize);
         return Result.success(page);
     }
     
@@ -99,13 +99,11 @@ public class AdminController {
     @ApiOperation("获取所有题目（管理员）")
     @GetMapping("/questions")
     public Result<Page<Question>> getAllQuestions(
-            @RequestParam(required = false) String subject,
-            @RequestParam(required = false) String chapter,
+            @RequestParam(required = false) String content,
             @RequestParam(required = false) String type,
-            @RequestParam(required = false) String year,
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize) {
-        Page<Question> page = questionService.getQuestions(subject, chapter, type, year, pageNum, pageSize);
+        Page<Question> page = questionService.getQuestionsForAdmin(content, type, pageNum, pageSize);
         return Result.success(page);
     }
     

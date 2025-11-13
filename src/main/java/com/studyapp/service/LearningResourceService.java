@@ -138,6 +138,24 @@ public class LearningResourceService {
     }
     
     /**
+     * 分页查询学习资源（管理员用，支持按标题搜索，不过滤发布状态）
+     */
+    @Cacheable(value = "admin_resources", key = "#title + '_' + #type + '_' + #pageNum + '_' + #pageSize")
+    public Page<LearningResource> getResourcesForAdmin(String title, String type, Integer pageNum, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "createTime"));
+        
+        if (title != null && !title.isEmpty() && type != null && !type.isEmpty()) {
+            return resourceRepository.findByTitleContainingAndType(title, type, pageable);
+        } else if (title != null && !title.isEmpty()) {
+            return resourceRepository.findByTitleContaining(title, pageable);
+        } else if (type != null && !type.isEmpty()) {
+            return resourceRepository.findByType(type, pageable);
+        } else {
+            return resourceRepository.findAll(pageable);
+        }
+    }
+    
+    /**
      * 按章节获取资源
      */
     @Cacheable(value = "resources", key = "'chapter_' + #subject + '_' + #chapter")

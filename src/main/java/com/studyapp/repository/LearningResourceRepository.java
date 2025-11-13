@@ -24,4 +24,11 @@ public interface LearningResourceRepository extends JpaRepository<LearningResour
     Page<LearningResource> findByPublished(Boolean published, Pageable pageable);
     
     List<LearningResource> findBySubjectAndChapter(String subject, String chapter);
+    
+    // Admin methods - search without published filter
+    Page<LearningResource> findByTitleContaining(String title, Pageable pageable);
+    
+    Page<LearningResource> findByTitleContainingAndType(String title, String type, Pageable pageable);
+    
+    Page<LearningResource> findByType(String type, Pageable pageable);
 }

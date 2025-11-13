@@ -67,6 +67,24 @@ public class QuestionService {
     }
     
     /**
+     * 分页查询题目（管理员用，支持按内容搜索）
+     */
+    @Cacheable(value = "admin_questions", key = "#content + '_' + #type + '_' + #pageNum + '_' + #pageSize")
+    public Page<Question> getQuestionsForAdmin(String content, String type, Integer pageNum, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "createTime"));
+        
+        if (content != null && !content.isEmpty() && type != null && !type.isEmpty()) {
+            return questionRepository.findByContentContainingAndType(content, type, pageable);
+        } else if (content != null && !content.isEmpty()) {
+            return questionRepository.findByContentContaining(content, pageable);
+        } else if (type != null && !type.isEmpty()) {
+            return questionRepository.findByType(type, pageable);
+        } else {
+            return questionRepository.findAll(pageable);
+        }
+    }
+    
+    /**
      * 获取题目详情（使用Redis缓存）
      */
     @Cacheable(value = "question", key = "#id")
