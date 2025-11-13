@@ -1,1 +1,58 @@
-<view class="container"><text>页面开发中</text></view>
+<!--pages/question/wrong/wrong.wxml-->
+<view class="container">
+  <!-- 标签切换 -->
+  <view class="tabs">
+    <view class="tab-item {{activeTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-index="0">
+      <text>未掌握</text>
+    </view>
+    <view class="tab-item {{activeTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-index="1">
+      <text>已掌握</text>
+    </view>
+  </view>
+
+  <!-- 错题列表 -->
+  <view class="wrong-list">
+    <view class="wrong-item card" 
+          wx:for="{{wrongQuestions}}" 
+          wx:key="id"
+          data-id="{{item.questionId}}"
+          bindtap="goToPractice">
+      <view class="question-header">
+        <text class="question-type type-{{item.questionType}}">
+          {{item.questionType === 'SINGLE_CHOICE' ? '单选' : item.questionType === 'MULTIPLE_CHOICE' ? '多选' : item.questionType === 'TRUE_FALSE' ? '判断' : '简答'}}
+        </text>
+        <text class="wrong-count">错误 {{item.wrongCount}} 次</text>
+      </view>
+
+      <view class="question-content">
+        <text class="question-text">{{item.questionContent}}</text>
+      </view>
+
+      <view class="question-footer">
+        <text class="question-meta">{{item.subject}} · {{item.knowledgePoint}}</text>
+        <button class="btn-master" 
+                wx:if="{{activeTab === 0}}"
+                data-id="{{item.questionId}}"
+                catchtap="markMastered">
+          标记已掌握
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && wrongQuestions.length === 0}}">
+    <image class="empty-image" src="/images/empty.png"></image>
+    <text class="empty-text">{{activeTab === 0 ? '暂无错题' : '暂无已掌握的错题'}}</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-bar" wx:if="{{wrongQuestions.length > 0 && activeTab === 0}}">
+    <button class="btn-primary practice-btn" bindtap="startPractice">开始练习错题</button>
+  </view>
+</view>

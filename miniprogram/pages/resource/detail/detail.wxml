@@ -1,1 +1,86 @@
-<view class="container"><text>页面开发中</text></view>
+<!--pages/resource/detail/detail.wxml-->
+<view class="container">
+  <view class="resource-detail" wx:if="{{resource}}">
+    <!-- 资源封面 -->
+    <view class="cover-section" wx:if="{{resource.coverUrl}}">
+      <image class="cover-image" src="{{resource.coverUrl}}" mode="aspectFill"></image>
+    </view>
+
+    <!-- 资源信息 -->
+    <view class="info-section card">
+      <text class="resource-title">{{resource.title}}</text>
+      <view class="resource-tags">
+        <text class="tag tag-primary">{{resource.subject}}</text>
+        <text class="tag tag-info">{{resource.type}}</text>
+        <text class="tag" wx:if="{{resource.chapter}}">{{resource.chapter}}</text>
+      </view>
+      <text class="resource-desc">{{resource.description}}</text>
+    </view>
+
+    <!-- 资源内容 -->
+    <view class="content-section card" wx:if="{{resource.contentUrl || resource.videoUrl}}">
+      <view class="section-title">资源内容</view>
+      
+      <!-- 视频播放 -->
+      <video wx:if="{{resource.type === 'VIDEO' && resource.videoUrl}}" 
+             class="video-player"
+             src="{{resource.videoUrl}}"
+             controls
+             show-center-play-btn
+             enable-play-gesture>
+      </video>
+
+      <!-- 文档预览 -->
+      <view wx:if="{{resource.type === 'DOCUMENT' && resource.contentUrl}}" class="document-section">
+        <text class="document-name">{{resource.fileName || '查看文档'}}</text>
+        <button class="btn-primary" bindtap="previewDocument">预览文档</button>
+      </view>
+
+      <!-- 题库链接 -->
+      <view wx:if="{{resource.type === 'QUESTION_BANK'}}" class="question-section">
+        <button class="btn-primary" bindtap="goToPractice">开始练习</button>
+      </view>
+    </view>
+
+    <!-- 学习笔记 -->
+    <view class="notes-section card">
+      <view class="section-title">学习笔记</view>
+      <textarea class="note-input" 
+                placeholder="记录你的学习笔记..."
+                value="{{note}}"
+                bindinput="onNoteInput"
+                maxlength="500">
+      </textarea>
+      <button class="btn-primary save-note-btn" bindtap="saveNote">保存笔记</button>
+    </view>
+
+    <!-- 相关资源 -->
+    <view class="related-section card" wx:if="{{relatedResources.length > 0}}">
+      <view class="section-title">相关资源</view>
+      <view class="related-list">
+        <view class="related-item" 
+              wx:for="{{relatedResources}}" 
+              wx:key="id"
+              data-id="{{item.id}}"
+              bindtap="goToResource">
+          <image class="related-cover" src="{{item.coverUrl}}" mode="aspectFill"></image>
+          <view class="related-info">
+            <text class="related-title">{{item.title}}</text>
+            <text class="related-subject">{{item.subject}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误提示 -->
+  <view class="error" wx:if="{{error}}">
+    <text>{{error}}</text>
+    <button class="btn-primary" bindtap="retry">重试</button>
+  </view>
+</view>

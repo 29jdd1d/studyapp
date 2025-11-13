@@ -1,1 +1,79 @@
-<view class="container"><text>页面开发中</text></view>
+<!--pages/question/list/list.wxml-->
+<view class="container">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-section">
+      <text class="filter-label">科目：</text>
+      <view class="filter-options">
+        <text class="filter-option {{selectedSubject === item ? 'active' : ''}}"
+              wx:for="{{subjects}}"
+              wx:key="index"
+              data-value="{{item}}"
+              bindtap="selectSubject">
+          {{item}}
+        </text>
+      </view>
+    </view>
+    
+    <view class="filter-section">
+      <text class="filter-label">类型：</text>
+      <view class="filter-options">
+        <text class="filter-option {{selectedType === item.value ? 'active' : ''}}"
+              wx:for="{{types}}"
+              wx:key="value"
+              data-value="{{item.value}}"
+              bindtap="selectType">
+          {{item.label}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 题目列表 -->
+  <view class="question-list">
+    <view class="question-item card" 
+          wx:for="{{questions}}" 
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="goToQuestion">
+      <view class="question-header">
+        <text class="question-type type-{{item.type}}">
+          {{item.type === 'SINGLE_CHOICE' ? '单选' : item.type === 'MULTIPLE_CHOICE' ? '多选' : item.type === 'TRUE_FALSE' ? '判断' : '简答'}}
+        </text>
+        <text class="question-difficulty diff-{{item.difficulty}}">
+          {{item.difficulty === 'EASY' ? '简单' : item.difficulty === 'MEDIUM' ? '中等' : '困难'}}
+        </text>
+      </view>
+      
+      <view class="question-content">
+        <text class="question-text">{{item.content}}</text>
+      </view>
+
+      <view class="question-footer">
+        <text class="question-meta">{{item.subject}} · {{item.knowledgePoint}}</text>
+        <text class="question-stat">做对率 {{item.correctRate || 0}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && questions.length === 0}}">
+    <image class="empty-image" src="/images/empty.png"></image>
+    <text class="empty-text">暂无题目</text>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{hasMore && !loading}}">
+    <text bindtap="loadMore">加载更多</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 开始练习按钮 -->
+  <view class="bottom-bar" wx:if="{{questions.length > 0}}">
+    <button class="btn-primary practice-btn" bindtap="startPractice">开始练习</button>
+  </view>
+</view>
