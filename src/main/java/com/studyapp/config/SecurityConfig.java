@@ -38,11 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
                 // 允许微信登录端点无需认证
-                .antMatchers("/api/user/wechat-login").permitAll()
+                .antMatchers("/user/wechat-login").permitAll()
                 // Swagger相关端点
                 .antMatchers("/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**").permitAll()
                 // 管理员端点需要认证
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 // 其他端点需要认证
                 .anyRequest().authenticated()
             .and()
