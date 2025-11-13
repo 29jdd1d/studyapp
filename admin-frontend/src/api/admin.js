@@ -81,13 +81,15 @@ export function createQuestion(data) {
   })
 }
 
-export function updateQuestion(id, data) {
-  return request({
-    url: `/question/${id}`,
-    method: 'put',
-    data
-  })
-}
+// Note: updateQuestion endpoint does not exist in backend
+// Removed to align with backend API
+// export function updateQuestion(id, data) {
+//   return request({
+//     url: `/question/${id}`,
+//     method: 'put',
+//     data
+//   })
+// }
 
 export function deleteQuestion(id) {
   return request({
@@ -105,13 +107,15 @@ export function getPosts(params) {
   })
 }
 
-export function updatePost(id, data) {
-  return request({
-    url: `/community/post/${id}`,
-    method: 'put',
-    data
-  })
-}
+// Note: updatePost endpoint does not exist in backend
+// Removed to align with backend API
+// export function updatePost(id, data) {
+//   return request({
+//     url: `/community/post/${id}`,
+//     method: 'put',
+//     data
+//   })
+// }
 
 export function deletePost(id) {
   return request({
