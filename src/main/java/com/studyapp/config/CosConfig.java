@@ -6,14 +6,18 @@ import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.region.Region;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * 腾讯云COS配置
  * Tencent Cloud COS Configuration
+ * 
+ * This configuration is only active when COS properties are configured
  */
 @Configuration
+@ConditionalOnProperty(name = "tencent.cos.secret-id")
 public class CosConfig {
     
     @Value("${tencent.cos.secret-id}")
