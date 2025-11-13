@@ -41,3 +41,15 @@ Thumbs.db
 
 # Application
 /uploads/
+
+# Node.js
+node_modules/
+dist/
+*.local
+.env.local
+.env.*.local
+
+# Admin Frontend Build
+admin-frontend/dist/
+admin-frontend/node_modules/
+admin-frontend/.DS_Store

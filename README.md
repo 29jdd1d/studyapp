@@ -4,7 +4,7 @@
 
 ## 项目简介
 
-本项目是一个完整的考研学习管理系统，包含Spring Boot后端API和微信小程序前端，支持学习资源管理、个性化学习计划、题库刷题、社区交流等功能。
+本项目是一个完整的考研学习管理系统，包含Spring Boot后端API、微信小程序前端和Vue3管理后台，支持学习资源管理、个性化学习计划、题库刷题、社区交流等功能。
 
 ## 技术栈
 
@@ -19,11 +19,20 @@
 - **构建工具**: Maven
 
 ### 前端技术
+
+#### 微信小程序端
 - **框架**: 微信小程序原生框架
 - **UI**: 自定义组件库
 - **状态管理**: 全局数据管理
 - **网络请求**: 封装的request工具
 - **认证**: JWT Token
+
+#### 管理后台
+- **框架**: Vue 3 (Composition API)
+- **构建工具**: Vite
+- **UI组件库**: Element Plus
+- **路由**: Vue Router 4
+- **HTTP客户端**: Axios
 
 ## 核心功能模块
 
@@ -249,6 +258,45 @@ module.exports = {
 
 详细的前端开发指南请查看：
 - [前端README](miniprogram/README.md)
+- [前端集成指南](MINIPROGRAM_GUIDE.md)
+- [前端开发示例](MINIPROGRAM_EXAMPLES.md)
+
+### 管理后台启动
+
+#### 1. 进入目录
+
+```bash
+cd admin-frontend
+```
+
+#### 2. 安装依赖
+
+```bash
+npm install
+```
+
+#### 3. 配置API地址
+
+修改 `.env` 文件中的API地址:
+```
+VITE_API_BASE_URL=http://localhost:8080/api
+```
+
+#### 4. 运行项目
+
+```bash
+npm run dev
+```
+
+访问 http://localhost:5173
+
+#### 5. 默认登录账号
+
+- 用户名: admin
+- 密码: admin123
+
+详细的管理后台文档请查看：
+- [管理后台README](admin-frontend/README.md)
 - [前端集成指南](MINIPROGRAM_GUIDE.md)
 - [前端开发示例](MINIPROGRAM_EXAMPLES.md)
 
