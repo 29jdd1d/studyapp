@@ -1,1 +1,88 @@
-<view class="container"><text>页面开发中</text></view>
+<!--pages/plan/detail/detail.wxml-->
+<view class="container">
+  <view class="plan-detail" wx:if="{{plan}}">
+    <!-- 计划信息卡片 -->
+    <view class="plan-info-card card">
+      <view class="plan-header">
+        <text class="plan-title">{{plan.title}}</text>
+        <text class="plan-status status-{{plan.status}}">
+          {{plan.status === 'ACTIVE' ? '进行中' : plan.status === 'COMPLETED' ? '已完成' : '已暂停'}}
+        </text>
+      </view>
+
+      <text class="plan-desc">{{plan.description}}</text>
+
+      <view class="plan-meta">
+        <view class="meta-item">
+          <text class="meta-label">目标院校：</text>
+          <text class="meta-value">{{plan.targetUniversity || '未设置'}}</text>
+        </view>
+        <view class="meta-item">
+          <text class="meta-label">目标专业：</text>
+          <text class="meta-value">{{plan.targetMajor || '未设置'}}</text>
+        </view>
+        <view class="meta-item">
+          <text class="meta-label">考试日期：</text>
+          <text class="meta-value">{{plan.examDate || '未设置'}}</text>
+        </view>
+      </view>
+
+      <view class="plan-progress">
+        <view class="progress-header">
+          <text class="progress-label">完成进度</text>
+          <text class="progress-value">{{plan.progress || 0}}%</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{plan.progress || 0}}%"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 计划项列表 -->
+    <view class="plan-items-card card">
+      <view class="card-title">学习任务</view>
+      
+      <view class="plan-items">
+        <view class="plan-item {{item.completed ? 'completed' : ''}}" 
+              wx:for="{{planItems}}" 
+              wx:key="id">
+          <view class="item-header">
+            <view class="item-left">
+              <text class="item-icon">{{item.completed ? '✓' : '○'}}</text>
+              <text class="item-title">{{item.title}}</text>
+            </view>
+            <text class="item-hours">{{item.estimatedHours}}h</text>
+          </view>
+
+          <text class="item-content">{{item.content}}</text>
+
+          <view class="item-footer">
+            <text class="item-date">{{item.planDate}}</text>
+            <button class="btn-complete" 
+                    wx:if="{{!item.completed}}"
+                    data-id="{{item.id}}"
+                    bindtap="completeItem">
+              完成
+            </button>
+            <text class="completed-tag" wx:else>已完成</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-items" wx:if="{{planItems.length === 0}}">
+        <text>暂无学习任务</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误提示 -->
+  <view class="error" wx:if="{{error}}">
+    <text>{{error}}</text>
+    <button class="btn-primary" bindtap="retry">重试</button>
+  </view>
+</view>

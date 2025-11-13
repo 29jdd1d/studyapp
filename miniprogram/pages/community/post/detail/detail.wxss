@@ -1,1 +1,274 @@
-.container { padding: 30rpx; }
+/* pages/community/post/detail/detail.wxss */
+.container {
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+  background-color: #f5f5f5;
+}
+
+/* 帖子卡片 */
+.post-card {
+  margin: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.author-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.author-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.author-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.author-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.post-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.post-category {
+  padding: 6rpx 16rpx;
+  font-size: 22rpx;
+  color: #1890ff;
+  background-color: #e6f7ff;
+  border-radius: 4rpx;
+  flex-shrink: 0;
+}
+
+.post-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.post-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.post-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-bottom: 25rpx;
+}
+
+.post-image {
+  width: calc((100% - 20rpx) / 3);
+  height: 200rpx;
+  border-radius: 8rpx;
+  background-color: #f0f0f0;
+}
+
+.post-image.single {
+  width: 100%;
+  height: 400rpx;
+}
+
+.post-stats {
+  display: flex;
+  align-items: center;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+  margin-right: 30rpx;
+}
+
+.stat-item .icon {
+  margin-right: 8rpx;
+  font-size: 28rpx;
+}
+
+.like-action {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.like-action .icon {
+  font-size: 36rpx;
+  transition: transform 0.3s;
+}
+
+.like-action .icon.liked {
+  animation: like 0.3s;
+}
+
+@keyframes like {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+/* 评论卡片 */
+.comments-card {
+  margin: 20rpx;
+  padding: 30rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 25rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.comments-list {
+  margin-top: 20rpx;
+}
+
+.comment-item {
+  display: flex;
+  margin-bottom: 30rpx;
+}
+
+.comment-item:last-child {
+  margin-bottom: 0;
+}
+
+.comment-avatar {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  margin-right: 15rpx;
+  flex-shrink: 0;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.comment-user {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.comment-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.comment-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.empty-comments {
+  padding: 60rpx 0;
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 底部评论输入框 */
+.comment-input-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #fff;
+  border-top: 1rpx solid #e0e0e0;
+  z-index: 100;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 20rpx;
+  margin-right: 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}
+
+.btn-send {
+  padding: 20rpx 30rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background-color: #1890ff;
+  border: none;
+  border-radius: 40rpx;
+}
+
+/* 通用样式 */
+.card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.loading,
+.error {
+  padding: 100rpx;
+  text-align: center;
+}
+
+.loading text,
+.error text {
+  display: block;
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: #fff;
+  border: none;
+  border-radius: 8rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+}

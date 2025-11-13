@@ -1,1 +1,82 @@
-<view class="container"><text>页面开发中</text></view>
+<!--pages/plan/create/create.wxml-->
+<view class="container">
+  <view class="create-form card">
+    <view class="form-title">创建学习计划</view>
+
+    <!-- 计划标题 -->
+    <view class="form-item">
+      <text class="form-label">计划标题 <text class="required">*</text></text>
+      <input class="form-input" 
+             placeholder="请输入计划标题"
+             value="{{formData.title}}"
+             bindinput="onTitleInput"
+             maxlength="50" />
+    </view>
+
+    <!-- 计划描述 -->
+    <view class="form-item">
+      <text class="form-label">计划描述</text>
+      <textarea class="form-textarea"
+                placeholder="请输入计划描述"
+                value="{{formData.description}}"
+                bindinput="onDescriptionInput"
+                maxlength="200" />
+    </view>
+
+    <!-- 目标院校 -->
+    <view class="form-item">
+      <text class="form-label">目标院校 <text class="required">*</text></text>
+      <input class="form-input"
+             placeholder="请输入目标院校"
+             value="{{formData.targetUniversity}}"
+             bindinput="onUniversityInput"
+             maxlength="30" />
+    </view>
+
+    <!-- 目标专业 -->
+    <view class="form-item">
+      <text class="form-label">目标专业 <text class="required">*</text></text>
+      <input class="form-input"
+             placeholder="请输入目标专业"
+             value="{{formData.targetMajor}}"
+             bindinput="onMajorInput"
+             maxlength="30" />
+    </view>
+
+    <!-- 考试日期 -->
+    <view class="form-item">
+      <text class="form-label">考试日期 <text class="required">*</text></text>
+      <picker mode="date"
+              value="{{formData.examDate}}"
+              start="{{minDate}}"
+              end="{{maxDate}}"
+              bindchange="onDateChange">
+        <view class="form-picker {{formData.examDate ? '' : 'placeholder'}}">
+          {{formData.examDate || '请选择考试日期'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 快捷生成 -->
+    <view class="quick-generate">
+      <text class="quick-title">快捷操作</text>
+      <button class="btn-recommend" bindtap="generateRecommend">
+        根据目标生成推荐计划
+      </button>
+      <text class="quick-tip">系统将根据您的目标院校和专业自动生成学习计划</text>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="form-actions">
+      <button class="btn-cancel" bindtap="cancel">取消</button>
+      <button class="btn-submit btn-primary" bindtap="submit">创建计划</button>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-modal" wx:if="{{loading}}">
+    <view class="loading-content">
+      <text>{{loadingText}}</text>
+    </view>
+  </view>
+</view>
