@@ -34,6 +34,9 @@ public class UserService {
     @Autowired
     private JwtUtil jwtUtil;
     
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+    
     @Value("${wechat.miniapp.appid}")
     private String appId;
     
@@ -177,6 +180,34 @@ public class UserService {
         }
         
         userRepository.save(user);
+    }
+    
+    /**
+     * 管理员登录
+     */
+    @Transactional(readOnly = true)
+    public LoginResponse adminLogin(String username, String password) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("用户名或密码错误"));
+        
+        if (!"ADMIN".equals(user.getRole())) {
+            throw new RuntimeException("该用户不是管理员");
+        }
+        
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("用户名或密码错误");
+        }
+        
+        if (!user.getEnabled()) {
+            throw new RuntimeException("账户已被禁用");
+        }
+        
+        // 生成token
+        String token = jwtUtil.generateTokenWithRole(user.getId(), user.getUsername(), user.getRole());
+        
+        // 返回响应
+        UserDTO userDTO = convertToDTO(user);
+        return new LoginResponse(token, userDTO);
     }
     
     /**

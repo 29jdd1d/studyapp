@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 // 允许微信登录端点无需认证
                 .antMatchers("/user/wechat-login").permitAll()
+                // 允许管理员登录端点无需认证
+                .antMatchers("/admin/login").permitAll()
                 // Swagger相关端点
                 .antMatchers("/swagger-ui/**", "/v2/api-docs", "/swagger-resources/**", "/webjars/**").permitAll()
                 // 管理员端点需要认证

@@ -1,6 +1,8 @@
 package com.studyapp.controller;
 
 import com.studyapp.common.Result;
+import com.studyapp.dto.AdminLoginRequest;
+import com.studyapp.dto.LoginResponse;
 import com.studyapp.entity.*;
 import com.studyapp.service.*;
 import io.swagger.annotations.Api;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +38,24 @@ public class AdminController {
     
     @Autowired
     private CommunityService communityService;
+    
+    @ApiOperation("管理员登录")
+    @PostMapping("/login")
+    public Result<LoginResponse> login(@Valid @RequestBody AdminLoginRequest request) {
+        try {
+            LoginResponse response = userService.adminLogin(request.getUsername(), request.getPassword());
+            return Result.success(response);
+        } catch (Exception e) {
+            return Result.error("登录失败: " + e.getMessage());
+        }
+    }
+    
+    @ApiOperation("管理员登出")
+    @PostMapping("/logout")
+    public Result<Void> logout() {
+        // JWT是无状态的，登出只需要前端删除token即可
+        return Result.success();
+    }
     
     @ApiOperation("获取系统统计数据")
     @GetMapping("/statistics")
