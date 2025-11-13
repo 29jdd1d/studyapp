@@ -1,1 +1,164 @@
-.container { padding: 30rpx; }
+/* pages/plan/create/create.wxss */
+.container {
+  min-height: 100vh;
+  padding: 20rpx;
+  background-color: #f5f5f5;
+}
+
+.create-form {
+  padding: 40rpx;
+}
+
+.form-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+
+.form-item {
+  margin-bottom: 35rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+  font-weight: bold;
+}
+
+.required {
+  color: #f5222d;
+}
+
+.form-input,
+.form-textarea,
+.form-picker {
+  width: 100%;
+  padding: 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  background-color: #fafafa;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #1890ff;
+  background-color: #fff;
+}
+
+.form-textarea {
+  min-height: 150rpx;
+  line-height: 1.6;
+}
+
+.form-picker {
+  color: #333;
+}
+
+.form-picker.placeholder {
+  color: #999;
+}
+
+.quick-generate {
+  margin: 40rpx 0;
+  padding: 30rpx;
+  background-color: #e6f7ff;
+  border-radius: 12rpx;
+  border: 1rpx solid #91d5ff;
+}
+
+.quick-title {
+  display: block;
+  font-size: 26rpx;
+  color: #1890ff;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.btn-recommend {
+  width: 100%;
+  padding: 20rpx;
+  margin-bottom: 15rpx;
+  font-size: 28rpx;
+  color: #1890ff;
+  background-color: #fff;
+  border: 2rpx solid #1890ff;
+  border-radius: 8rpx;
+}
+
+.quick-tip {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.form-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 50rpx;
+}
+
+.btn-cancel,
+.btn-submit {
+  flex: 1;
+  padding: 24rpx;
+  font-size: 32rpx;
+  border-radius: 8rpx;
+  border: none;
+}
+
+.btn-cancel {
+  background-color: #fff;
+  color: #666;
+  border: 2rpx solid #d9d9d9;
+}
+
+.btn-submit {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+/* 加载遮罩 */
+.loading-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-content {
+  padding: 50rpx 80rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  text-align: center;
+}
+
+.loading-content text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 通用样式 */
+.card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: #fff;
+}

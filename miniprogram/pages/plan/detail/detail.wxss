@@ -1,1 +1,274 @@
-.container { padding: 30rpx; }
+/* pages/plan/detail/detail.wxss */
+.container {
+  min-height: 100vh;
+  padding: 20rpx;
+  padding-bottom: 40rpx;
+  background-color: #f5f5f5;
+}
+
+/* 计划信息卡片 */
+.plan-info-card {
+  margin-bottom: 20rpx;
+  padding: 30rpx;
+}
+
+.plan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.plan-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.plan-status {
+  padding: 8rpx 20rpx;
+  font-size: 22rpx;
+  border-radius: 40rpx;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.status-ACTIVE {
+  background-color: #52c41a;
+}
+
+.status-COMPLETED {
+  background-color: #1890ff;
+}
+
+.status-PAUSED {
+  background-color: #faad14;
+}
+
+.plan-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 30rpx;
+}
+
+.plan-meta {
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+}
+
+.meta-item {
+  display: flex;
+  margin-bottom: 15rpx;
+  font-size: 26rpx;
+}
+
+.meta-item:last-child {
+  margin-bottom: 0;
+}
+
+.meta-label {
+  color: #999;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.meta-value {
+  color: #333;
+  flex: 1;
+}
+
+.plan-progress {
+  margin-top: 20rpx;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15rpx;
+}
+
+.progress-label {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.progress-value {
+  font-size: 28rpx;
+  color: #1890ff;
+  font-weight: bold;
+}
+
+.progress-bar {
+  height: 16rpx;
+  background-color: #f0f0f0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, #1890ff, #52c41a);
+  border-radius: 8rpx;
+  transition: width 0.3s;
+}
+
+/* 计划项列表 */
+.plan-items-card {
+  padding: 30rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.plan-items {
+  margin-top: 20rpx;
+}
+
+.plan-item {
+  padding: 25rpx;
+  margin-bottom: 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  background-color: #fafafa;
+  transition: all 0.3s;
+}
+
+.plan-item.completed {
+  border-color: #b7eb8f;
+  background-color: #f6ffed;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.item-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 15rpx;
+  border: 2rpx solid #d9d9d9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.plan-item.completed .item-icon {
+  border-color: #52c41a;
+  background-color: #52c41a;
+  color: #fff;
+}
+
+.item-title {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+  flex: 1;
+}
+
+.plan-item.completed .item-title {
+  color: #52c41a;
+}
+
+.item-hours {
+  font-size: 24rpx;
+  color: #1890ff;
+  margin-left: 10rpx;
+  flex-shrink: 0;
+}
+
+.item-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 15rpx;
+  padding-left: 55rpx;
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 55rpx;
+}
+
+.item-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.btn-complete {
+  padding: 8rpx 20rpx;
+  font-size: 24rpx;
+  color: #1890ff;
+  background-color: #e6f7ff;
+  border: 1rpx solid #91d5ff;
+  border-radius: 4rpx;
+}
+
+.completed-tag {
+  font-size: 24rpx;
+  color: #52c41a;
+}
+
+.empty-items {
+  padding: 60rpx 0;
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 通用样式 */
+.card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.loading,
+.error {
+  padding: 100rpx;
+  text-align: center;
+}
+
+.loading text,
+.error text {
+  display: block;
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: #fff;
+  border: none;
+  border-radius: 8rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+}
