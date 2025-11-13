@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +22,12 @@ import java.time.Duration;
 /**
  * Redis配置类
  * Redis Configuration
+ * 
+ * This configuration is only active when Redis is enabled
  */
 @Configuration
 @EnableCaching
+@ConditionalOnProperty(name = "spring.redis.host", matchIfMissing = false)
 public class RedisConfig {
     
     @Bean
