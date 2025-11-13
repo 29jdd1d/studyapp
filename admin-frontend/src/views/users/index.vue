@@ -112,8 +112,9 @@ const loadUsers = async () => {
     }
     const response = await getUsers(params)
     if (response.data) {
-      userList.value = response.data.list || response.data
-      pagination.total = response.data.total || userList.value.length
+      // Spring Data Page returns 'content' for the list and 'totalElements' for total count
+      userList.value = response.data.content || response.data
+      pagination.total = response.data.totalElements || userList.value.length
     }
   } catch (error) {
     console.error('Failed to load users:', error)

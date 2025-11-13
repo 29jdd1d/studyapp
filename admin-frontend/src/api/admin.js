@@ -59,7 +59,7 @@ export function updateResource(id, data) {
 
 export function deleteResource(id) {
   return request({
-    url: `/resource/${id}`,
+    url: `/admin/resource/${id}`,
     method: 'delete'
   })
 }
@@ -81,17 +81,19 @@ export function createQuestion(data) {
   })
 }
 
-export function updateQuestion(id, data) {
-  return request({
-    url: `/question/${id}`,
-    method: 'put',
-    data
-  })
-}
+// Note: updateQuestion endpoint does not exist in backend
+// Removed to align with backend API
+// export function updateQuestion(id, data) {
+//   return request({
+//     url: `/question/${id}`,
+//     method: 'put',
+//     data
+//   })
+// }
 
 export function deleteQuestion(id) {
   return request({
-    url: `/question/${id}`,
+    url: `/admin/question/${id}`,
     method: 'delete'
   })
 }
@@ -105,25 +107,29 @@ export function getPosts(params) {
   })
 }
 
-export function updatePost(id, data) {
-  return request({
-    url: `/community/post/${id}`,
-    method: 'put',
-    data
-  })
-}
+// Note: updatePost endpoint does not exist in backend
+// Removed to align with backend API
+// export function updatePost(id, data) {
+//   return request({
+//     url: `/community/post/${id}`,
+//     method: 'put',
+//     data
+//   })
+// }
 
 export function deletePost(id) {
   return request({
-    url: `/community/post/${id}`,
+    url: `/admin/post/${id}`,
     method: 'delete'
   })
 }
 
-export function auditPost(id, status) {
-  return request({
-    url: `/admin/posts/${id}/audit`,
-    method: 'post',
-    data: { status }
-  })
-}
+// Note: auditPost endpoint does not exist in backend
+// Removed to align with backend API
+// export function auditPost(id, status) {
+//   return request({
+//     url: `/admin/posts/${id}/audit`,
+//     method: 'post',
+//     data: { status }
+//   })
+// }

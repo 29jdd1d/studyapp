@@ -19,9 +19,12 @@ function getPostList(params) {
 
 /**
  * 获取我的帖子
+ * @param {Object} params 查询参数
+ * @param {Number} params.pageNum 页码
+ * @param {Number} params.pageSize 每页数量
  */
-function getMyPosts() {
-  return get('/community/post/my');
+function getMyPosts(params = {}) {
+  return get('/community/post/my', params);
 }
 
 /**

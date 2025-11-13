@@ -49,7 +49,8 @@
         <el-table-column prop="createdAt" label="创建时间" width="180" />
         <el-table-column label="操作" fixed="right" width="150">
           <template #default="{ row }">
-            <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button>
+            <!-- Note: Edit functionality removed as PUT /question/{id} endpoint does not exist in backend -->
+            <!-- <el-button link type="primary" size="small" @click="handleEdit(row)">编辑</el-button> -->
             <el-button link type="danger" size="small" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
@@ -116,7 +117,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getQuestions, createQuestion, updateQuestion, deleteQuestion } from '../../api/admin'
+import { getQuestions, createQuestion, deleteQuestion } from '../../api/admin'
 
 const loading = ref(false)
 const dialogVisible = ref(false)
@@ -148,8 +149,9 @@ const loadQuestions = async () => {
     }
     const response = await getQuestions(params)
     if (response.data) {
-      questionList.value = response.data.list || response.data
-      pagination.total = response.data.total || questionList.value.length
+      // Spring Data Page returns 'content' for the list and 'totalElements' for total count
+      questionList.value = response.data.content || response.data
+      pagination.total = response.data.totalElements || questionList.value.length
     }
   } catch (error) {
     console.error('Failed to load questions:', error)
@@ -213,17 +215,19 @@ const handleAdd = () => {
   dialogVisible.value = true
 }
 
-const handleEdit = (row) => {
-  isEdit.value = true
-  editForm.value = { ...row }
-  dialogVisible.value = true
-}
+// Note: handleEdit function removed as PUT /question/{id} endpoint does not exist in backend
+// const handleEdit = (row) => {
+//   isEdit.value = true
+//   editForm.value = { ...row }
+//   dialogVisible.value = true
+// }
 
 const handleSave = async () => {
   try {
     if (isEdit.value) {
-      await updateQuestion(editForm.value.id, editForm.value)
-      ElMessage.success('更新成功')
+      // Note: Update functionality removed as PUT /question/{id} endpoint does not exist in backend
+      ElMessage.warning('编辑功能暂不支持，请删除后重新创建')
+      return
     } else {
       await createQuestion(editForm.value)
       ElMessage.success('创建成功')
