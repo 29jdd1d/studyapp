@@ -99,19 +99,15 @@ public class LearningResourceService {
      */
     @Cacheable(value = "resource", key = "#id")
     public LearningResource getResource(Long id) {
-        LearningResource resource = resourceRepository.findById(id)
+        return resourceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("资源不存在"));
-        
-        // 增加浏览次数（异步更新，不影响缓存）
-        updateViewCount(id);
-        
-        return resource;
     }
     
     /**
      * 异步更新浏览次数
      */
     @Transactional
+    @CacheEvict(value = "resource", key = "#id")
     public void updateViewCount(Long id) {
         resourceRepository.findById(id).ifPresent(resource -> {
             resource.setViewCount(resource.getViewCount() + 1);
