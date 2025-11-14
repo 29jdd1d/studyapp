@@ -48,6 +48,8 @@ public class LearningResourceController {
     @GetMapping("/{id}")
     public Result<LearningResource> getResource(@PathVariable Long id) {
         LearningResource resource = resourceService.getResource(id);
+        // Update view count asynchronously after returning the resource
+        resourceService.updateViewCount(id);
         return Result.success(resource);
     }
     

@@ -97,6 +97,7 @@ public class QuestionService {
      * 提交答案
      */
     @Transactional
+    @CacheEvict(value = "question", key = "#questionId")
     public boolean submitAnswer(Long userId, Long questionId, String userAnswer, Integer timeSpent) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("题目不存在"));
